@@ -18,10 +18,12 @@ type SelectProps = {
 	onChange?: (selected: OptionType) => void;
 	onClose?: () => void;
 	title?: string;
+	style?: React.CSSProperties;
 };
 
 export const Select = (props: SelectProps) => {
-	const { options, placeholder, selected, onChange, onClose, title } = props;
+	const { options, placeholder, selected, onChange, onClose, title, style } =
+		props;
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const rootRef = useRef<HTMLDivElement>(null);
 	const placeholderRef = useRef<HTMLDivElement>(null);
@@ -47,7 +49,7 @@ export const Select = (props: SelectProps) => {
 	};
 
 	return (
-		<div className={styles.container}>
+		<div className={styles.container} style={style}>
 			{title && (
 				<>
 					<Text size={12} weight={800} uppercase>

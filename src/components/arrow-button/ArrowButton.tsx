@@ -28,5 +28,3 @@ export const ArrowButton = ({ isOpen, onClick }: TArrowButton) => {
 		</div>
 	);
 };
-
-// ветка создайся!
