@@ -29,47 +29,47 @@ export const ArticleParamsForm = ({
 	appState,
 	setAppState,
 }: ArticleParamsFormProps) => {
-	const [isOpen, setIsOpen] = React.useState(false);
+	const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 	const [formState, setFormState] = React.useState<ArticleStateType>(appState);
 
 	const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		setAppState(formState);
-		setIsOpen(false);
+		setIsMenuOpen(false);
 	};
 
 	const handleFormReset = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		setAppState(defaultArticleState);
 		setFormState(defaultArticleState);
-		setIsOpen(false);
+		setIsMenuOpen(false);
 	};
 
 	const ref: MutableRefObject<HTMLElement> | null = useClickAway(() =>
-		setIsOpen(false)
+		setIsMenuOpen(false)
 	);
 
 	React.useEffect(() => {
-		document.addEventListener('keydown', (event) => {
+		function closeByEscape(event: KeyboardEvent) {
 			if (event.key === 'Escape') {
-				setIsOpen(false);
+				setIsMenuOpen(false);
 			}
-		});
+		}
 
-		return () => {
-			document.removeEventListener('keydown', (event) => {
-				if (event.key === 'Escape') {
-					setIsOpen(false);
-				}
-			});
-		};
-	}, [isOpen]);
+		if (isMenuOpen) {
+			document.addEventListener('keydown', closeByEscape);
+			return () => document.removeEventListener('keydown', closeByEscape);
+		}
+	}, [isMenuOpen]);
 
 	return (
 		<>
-			<ArrowButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
+			<ArrowButton
+				isMenuOpen={isMenuOpen}
+				onClick={() => setIsMenuOpen(!isMenuOpen)}
+			/>
 			<aside
-				className={clsx(styles.container, isOpen && styles.container_open)}
+				className={clsx(styles.container, isMenuOpen && styles.container_open)}
 				ref={ref}>
 				<form
 					className={styles.form}
